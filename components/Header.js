@@ -1,6 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
+import Colors from "../constants/colors";
+
 const Header = (props) => {
   return (
     <View style={styles.header}>
@@ -14,9 +16,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 90,
     paddingTop: 36,
-    backgroundColor: "#f7286b",
-    // 이걸 보면 기본적으로 flex가 걸어져 있다는 것을 알 수 있다.
-    // 다만 flexDirection이 colum으로 되어 있다는 것이지 뭐.
+    backgroundColor: Colors.primary,
     alignItems: "center",
     justifyContent: "center",
   },
