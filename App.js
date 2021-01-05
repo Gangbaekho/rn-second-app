@@ -5,18 +5,33 @@ import { StyleSheet, View } from "react-native";
 import Header from "./components/Header";
 import StartGameScreen from "./screens/StartGameScreen";
 import GameScreen from "./screens/GameScreen";
+import GameOverScreen from "./screens/GameOverScreen";
 
 export default function App() {
   const [userNumber, setUserNumber] = useState();
 
+  // guessRounds가 0 이상이면 게임 오버를 띄우기 위한 state이다.
+  const [guessRounds, setGuessRounds] = useState(0);
+
   const startGameHandler = (selectedNumber) => {
     setUserNumber(selectedNumber);
+    setGuessRounds(0);
+  };
+
+  // 뭐 이건 guessRounds의 state를 바꾸기 위한 handler이고
+  const gameOverHandler = (numberOfRounds) => {
+    setGuessRounds(numberOfRounds);
   };
 
   let content = <StartGameScreen onStartGame={startGameHandler} />;
 
-  if (userNumber) {
-    content = <GameScreen userChoice={userNumber} />;
+  // 상황에 따라서 보이는 Screen이 달라지는 것이라고 로직을 짜는거임.
+  if (userNumber && guessRounds <= 0) {
+    content = (
+      <GameScreen userChoice={userNumber} onGameOver={gameOverHandler} />
+    );
+  } else if (guessRounds > 0) {
+    content = <GameOverScreen />;
   }
 
   return (
