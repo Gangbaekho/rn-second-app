@@ -111,6 +111,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     marginVertical: 10,
+    // 이렇게 원하는 곳에 적용하믄 됨.
+    fontFamily: "open-sans-bold",
   },
   inputContainer: {
     width: 300,
