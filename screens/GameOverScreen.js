@@ -1,8 +1,10 @@
 import React from "react";
 import { View, Text, StyleSheet, Button, Image } from "react-native";
+import { Colors } from "react-native/Libraries/NewAppScreen";
 
 import BodyText from "../components/BodyText";
 import TitleText from "../components/TitleText";
+import Color from "../constants/colors";
 
 const GameOverScreen = (props) => {
   return (
@@ -11,23 +13,29 @@ const GameOverScreen = (props) => {
       <View style={styles.imageContainer}>
         <Image
           style={styles.image}
-          // 이건 local image를 사용할 떄 쓰는 방법이다.
-          // source={require("../assets/success.png")}
-          // Network를 통해서 가져온 이미지는 항상 Width랑 Height를 꼭 적어줘야 한다는 것을
-          // 조심해야 한다. Local image는 꼭 그래야 할 필요는 없다고 하는 것에 반해서
-          // Network를 통해서 가져온 이미지는 번거롭지만 정해줘야 한다는 것 같네
-          // 아 그리고 또 하나 알아야 할 것은 Network로 가져오는 거기 때문에 아무래도 시간이
-          // 조금 걸리게 된다. 그렇기 떄문에 React native에서는 자동으로 fadeDuration={300}을 적용해 놓는다
-          // 뭐 이걸 조작하고 싶으면은 다른 숫자로 바꾸면 된다.
-          source={{
-            uri:
-              "https://image.shutterstock.com/image-photo/evening-view-ama-dablam-on-260nw-258841592.jpg",
-          }}
+          source={require("../assets/success.png")}
           resizeMode="cover"
         />
       </View>
-      <BodyText>Number of rounds: {props.roundsNumber}</BodyText>
-      <BodyText>Number was : {props.userNumber}</BodyText>
+      {/* 자자 여기서 알아야 할 것은 Text component 안에다가
+      Text를 중첩할 수 있다는 개념이다. 별표~ 
+      아 그리고 엄청 중요한게, 저번에 View라는 component에다가
+      FontFamily를 넣어서 그 밑에있는거에다가 상속하려고 했는데,
+      그건 CSS에서나 먹히는거지 여기서는 불가능 했었다.
+      하지만 Text안에 Text component가 있을경우
+      부모의 Text에다가 Styling을 하게 되면은 자식도 그것을 물려받는
+      상속의 개념이 여기는 동작한다는 것이다.
+      뭐 이런건 그려려니 하고 필요할떄 쓰면 되는거겠지.
+      거의 유일한 예외상황이라고 생각하면 된다.
+      */}
+      <View style={styles.resultContainer}>
+        <BodyText style={styles.resultText}>
+          Your phone needed{" "}
+          <Text style={styles.highlight}>{props.roundsNumber}</Text> rounds to
+          guess the number
+          <Text style={styles.highlight}>{props.userNumber}</Text>
+        </BodyText>
+      </View>
       <Button title="NEW GAME" onPress={props.onRestart} />
     </View>
   );
@@ -51,6 +59,21 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: "100%",
+  },
+  resultContainer: {
+    marginHorizontal: 30,
+    marginVertical: 15,
+  },
+  // 희한한것은 text에다가 가운데 정렬을 쓰게 되는것이다.
+  // CSS 같으면은 Container에다가 쓸 것 같은데
+  // 하긴 여기는 상속이 개념이 안먹히기 떄문에 그렇게 하는게 당연한 것 같다 생각해보니까.
+  resultText: {
+    textAlign: "center",
+    fontSize: 20,
+  },
+  highlight: {
+    color: Color.primary,
+    fontFamily: "open-sans-bold",
   },
 });
 
