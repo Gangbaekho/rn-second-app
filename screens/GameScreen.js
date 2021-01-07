@@ -86,18 +86,13 @@ const GameScreen = (props) => {
           <Ionicons name="md-add" size={24} color="white" />
         </MainButton>
       </Card>
-      {/* 흠 좀 헷갈리긴 하는데, View라는 것으로 ScrollView를 감싸야지
-      width나 height 뭐 이런것을 컨트롤 할 수 있는 것 같다.
-      아직까지 어떤 component가 inline인지 block element인지 파악이 잘 안되는 것 같다.
-      정리를 해주면 좋으려만.. */}
-      <View style={styles.list}>
-        {/* IOS에서는 되는데 Android 에서는 이게 scroll이 안되는 문제가 발생한다.
-        왜냐하면 View로 감쌌기 떄문에 android에서는 문제가 되는 것인데 이것은
-        view의 style에서 flex:1을 해주면은 해결되는 문제이다.
-        조금 까다로우니까 이걸 잘 봐둬야 한다. 뭐 이러한 문제는
-        IOS가 default로 좀 더 잘 잡아뒀다 뭐 그렇게 생각해주고 android에서는
-        이러한 것들을 직접 추가해야 한다 정도 느낌을 가지고 가면 되겠다.*/}
-        <ScrollView>
+      <View style={styles.listContainer}>
+        {/* 흠 ScrollView를 styling 하려면은 style이 아니라 이 attribute를 
+        이용하라는 거다. 글쎄다 이렇게 해야지 정 가운데로 오긴 하는데,
+        왜 그 상위에 View에다가 alignItems를 center로 하면 원하는 대로 나오지 않았을까.
+        이건 좀 더 개인적으로 테스트를 해야 할 부분인 것 같다.
+        */}
+        <ScrollView contentContainerStyle={styles.list}>
           {pastGuesses.map((guess, index) => renderListItem(guess, index + 1))}
         </ScrollView>
       </View>
@@ -118,26 +113,36 @@ const styles = StyleSheet.create({
     width: 400,
     maxWidth: "90%",
   },
-  list: {
+  listContainer: {
     flex: 1,
     width: "80%",
   },
-
+  list: {
+    flexGrow: 1,
+    alignItems: "center",
+    // 흠 이렇게 하면은 ScrollView 에서
+    // Item들이 밑에서 부터 생겨난다. 왜냐면
+    // 수직 정렬을 통해서 flex-end로 했기 떄문에 그렇다.
+    // 반대로 하면 위에서 부터 생기겠찌.
+    // center로 하면 가운데에서부터 생기는건가 음 그렇네
+    // 아이템이 생기는 위치를 이걸로 지정할 수 있겠다.
+    // 뭐야 근데 스크롤이 안되잖아. flex:1을 적용하고 나니까.
+    // 그러니까 flexGrow를 써야한다 뭐 그 말인데.. 잘 모르겠네
+    // 자 다시 생각해 보면 flex:1이란 것은 가능한한 많은 공간을 차지해라 라는것이고
+    // flexGrow도 같은 내용을 포함하고 있지만 ScrollView에서 사용하는 것이라고
+    // 일단은 생각하고 넘어가자, 좀 더 flexible 한 방법이라고 생각하면 된다.
+  },
   listItem: {
     borderColor: "#ccc",
     borderWidth: 1,
     padding: 15,
     marginVertical: 10,
     backgroundColor: "white",
-    // 자 여기서 알 수 있는 것은
-    // View라는 것은 기본적으로 flexDirection이 column으로 되어 있기 떄문에
-    // 여기서는 row로 바꿔주자.
-    // 또한 반복이긴 한데, Mobile에서는 모든게 이미 flex가 이루어져 있다고
-    // 생각을 하면 된다. 그래서 CSS로 따지면은 굳이 display:flex를 해주지 않아도
-    // 그게 default 값으로 적용되어 있다고 생각을 하면 된다.
     flexDirection: "row",
-    // 이걸 왜 여기다 두었는지 잘 생각해두자.
     justifyContent: "space-around",
+    // 이걸 안하게 되면은 부모의 width:80%의 100%만큼 다 차게 된다 뭐
+    // 이 말인 것 같은데 계속 헷갈리긴 하네.
+    width: "60%",
   },
 });
 
