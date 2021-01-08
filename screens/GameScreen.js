@@ -80,19 +80,6 @@ const GameScreen = (props) => {
     ]);
   };
 
-  // 이런식으로 아예 다른 것을 return 하도록 분기를 칠 수 있고.
-  // if (Dimensions.get("window").height > 600) {
-  //   return <View>...</View>;
-  // }
-
-  // 글쎄다 나 같으면 Style sheet를 두개 만든다음에
-  // 그것을 분기치는 식으로 하는게 나을 것 같다.
-  // return 을 분기치는 것 보다 style sheet를 분기치는게
-  // 더 바람직 할 것 같다. 이건 그냥 내 의견임.
-
-  // 뭐 분기를 치는 방법은 여러개니까 내가 생각해서
-  // 새로운 것을 만들 수도 있을 것임. 알아서 해라 이건.
-
   return (
     <View style={styles.screen}>
       <Text style={DefaultStyles.bodyText}>Opponent's Guess</Text>
@@ -126,11 +113,6 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
-    // 이런식으로 삼항 연산자를 통해서 간단하게 responsive한 것을 만들 수
-    // 있다라는 거다. 즉 쉽게 말하면 이 Dimentsions라는 것이
-    // CSS의 media query의 역할을 하는거라고 보면 되고
-    // 저런식으로 활용할 수 있다는 것 정도 알면 되겠다. 하지만 모두 다 이렇게 하면
-    // 너무 지저분 할 것 같은데, 다른 해결방법이 있는지도 한 번 확인을 해보자
     marginTop: Dimensions.get("window").height > 600 ? 20 : 5,
     width: 400,
     maxWidth: "90%",
