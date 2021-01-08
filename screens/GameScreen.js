@@ -92,20 +92,9 @@ const GameScreen = (props) => {
         </MainButton>
       </Card>
       <View style={styles.listContainer}>
-        {/* <ScrollView contentContainerStyle={styles.list}>
-          {pastGuesses.map((guess, index) => renderListItem(guess, index + 1))}
-        </ScrollView> */}
-        {/* 
-        예전에 했던 것 같긴 한데, FlatList는 몇개가 나올지 모르는 상황일 때
-        쓰는 Component 였던 것 같다. 복습좀 하긴 해야겠네. 아무튼간에
-        만약에 보여줘야 할 게 1000개이다? 그걸 다 보여주는게 아니라
-        일정 갯수만 보여줘야 겠찌 그래야지 안전할거니까.
-        */}
         <FlatList
           keyExtractor={(item) => item}
           data={pastGuesses}
-          // 신기한 것은 renderListItem에는 두가지 argument가 들어가지만
-          // item 그 자체는 자동으로 주입되기 떄문에 여기에서는 length만 주었다는 거임.
           renderItem={renderListItem.bind(this, pastGuesses.length)}
           contentContainerStyle={styles.list}
         />
@@ -133,7 +122,6 @@ const styles = StyleSheet.create({
   },
   list: {
     flexGrow: 1,
-    // alignItems: "center",
   },
   listItem: {
     borderColor: "#ccc",

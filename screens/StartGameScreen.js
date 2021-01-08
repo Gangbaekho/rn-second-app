@@ -8,6 +8,10 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
+  // 이건 component로 보기보다는
+  // Object로 보는게 맞다. device의 크기를 알 수 있게 해주는
+  // 그런 Object로 생각해야 한다.
+  Dimensions,
 } from "react-native";
 
 import Card from "../components/Card";
@@ -117,8 +121,9 @@ const styles = StyleSheet.create({
     fontFamily: "open-sans-bold",
   },
   inputContainer: {
-    width: 300,
-    maxWidth: "80%",
+    width: "80%",
+    minWidth: 300,
+    maxWidth: "95%",
     alignItems: "center",
   },
   buttonContainer: {
@@ -128,7 +133,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   button: {
-    width: "40%",
+    width: Dimensions.get("window").width / 4,
   },
   input: {
     width: 50,
