@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, SafeAreaView } from "react-native";
 
 import * as Font from "expo-font";
 import AppLoading from "expo-app-loading";
@@ -48,14 +48,6 @@ export default function App() {
 
   let content = <StartGameScreen onStartGame={startGameHandler} />;
 
-  // content = (
-  //   <GameOverScreen
-  //     roundsNumber={1}
-  //     userNumber={1}
-  //     onRestart={configureNewGameHandler}
-  //   />
-  // );
-
   if (userNumber && guessRounds <= 0) {
     content = (
       <GameScreen userChoice={userNumber} onGameOver={gameOverHandler} />
@@ -71,10 +63,13 @@ export default function App() {
   }
 
   return (
-    <View style={styles.screen}>
+    // SafeAreaView 라는 것은 가장 바깥의 View 역할을 해줘야 한다.
+    // 그러니까 당연히 App에서 쓰일 수 밖에 없는 것인가?
+    // 뭐 난 그렇게 생각을 하긴 하는데.. 그건 또 나중에 생각을 해봐야겠다.
+    <SafeAreaView style={styles.screen}>
       <Header title="Guess a Number" />
       {content}
-    </View>
+    </SafeAreaView>
   );
 }
 
