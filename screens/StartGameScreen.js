@@ -45,9 +45,6 @@ const StartGameScreen = (props) => {
 
     Dimensions.addEventListener("change", updateLayout);
 
-    // 이렇게 useEffect에서 return 하는 함수는
-    // useEffect가 돌기 전에 한번 도는 함수라고 생각을 하면 된다.
-    // 이렇게 해야지 단 하나의 EventListener를 유지할 수 있기 떄문이다.
     return () => {
       Dimensions.removeEventListener("change", updateLayout);
     };
@@ -154,16 +151,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   button: {
-    // 근데 이건 문제가 되는게 앱이 시작될 때 딱 한번
-    // 이게 일어나기 때문에 portrait 로 했으면 한번 정해지고
-    // 그 다음 landscape 모드로 넘어가면 이 값이 고정되어 있기 때문에
-    // 적절한 화면이 나타나지 않는다는 것이다. 그렇기 떄문에 여기서 필요한 것은
-    // 모드가 바뀔떄 마다 다시 계산을 해주는 무언가가 필요하다 그말이다.
-    // 그리고 Rerendering 될 떄 마다 바뀌는 것이기 떄문에 여기다가 넣으면 안되고
-    // inline style로 넣어야 한다는 것도 주의깊게 보아야 한다.
-    // styles를 따로 둔 것은 여태까지 rendering 하는 것과 관계가 없었기 떄문이지만
-    // 여기서는 state 값에 따라 달라져야 하기 때문에 함수 안에다가 넣어야 한다는 것이다.
-    // width: Dimensions.get("window").width / 4,
   },
   input: {
     width: 50,

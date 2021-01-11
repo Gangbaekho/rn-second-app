@@ -17,11 +17,6 @@ import MainButton from "../components/MainButton";
 
 const GameOverScreen = (props) => {
   return (
-    // 화면의 height가 엄청 작을 경우에는
-    // 화면의 크기를 넘어서서 content가 나타날 수 있다.
-    // 그렇기 때문에 ScrollView를 넣는 것이라고 하는건데
-    // 그렇게 따지면 언제 넘칠지 모르니까 View가 아니라
-    // ScrollView로 항상 감싸줘야 하는거 아닌가. 아무튼 뭐 그렇다네.
     <ScrollView>
       <View style={styles.screen}>
         <TitleText>The Game is over!</TitleText>
@@ -51,6 +46,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    paddingVertical: 10,
   },
   imageContainer: {
     borderRadius: Dimensions.get("window").width * 0.7 * 0.5,
