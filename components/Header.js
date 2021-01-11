@@ -6,24 +6,39 @@ import TitleText from "../components/TitleText";
 
 const Header = (props) => {
   return (
-    <View style={styles.header}>
+    <View
+      style={{
+        ...styles.headerBase,
+        // 이렇게 Platform의 select를 이용하면 쉽게
+        // 분기 처리를 할 수 있다는 것이다.
+        // Base를 만들어 놓고, IOS, Android를 위한
+        // 스타일링을 따로 한 것도 눈여겨 볼만 하다.
+        ...Platform.select({
+          ios: styles.headerIOS,
+          android: styles.headerAndroid,
+        }),
+      }}
+    >
       <TitleText style={styles.title}>{props.title}</TitleText>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  header: {
+  headerBase: {
     width: "100%",
     height: 90,
     paddingTop: 36,
-    // 이런식으로 Platform.OS를 이용해서 플랫폼에 따라서 다르게 뭔가를 할 수 있다.
-    // 정도를 알면 된다.
-    backgroundColor: Platform.OS === "android" ? Colors.primary : "white",
     alignItems: "center",
     justifyContent: "center",
-    borderBottomColor: Platform.OS === "ios" ? "#ccc" : "transparent",
-    borderBottomWidth: Platform.OS === "ios" ? 1 : 0,
+  },
+  headerIOS: {
+    backgroundColor: "white",
+    borderBottomColor: "#ccc",
+    borderBottomWidth: 1,
+  },
+  headerAndroid: {
+    backgroundColor: Colors.primary,
   },
   title: {
     color: Platform.OS === "ios" ? Colors.primary : "white",
