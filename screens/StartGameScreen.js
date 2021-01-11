@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -25,6 +25,9 @@ const StartGameScreen = (props) => {
   const [enteredValue, setEnteredValue] = useState("");
   const [confirmed, setConfirmed] = useState(false);
   const [selectedNumber, setSelectedNumber] = useState();
+  const [buttonWidth, setButtonWidth] = useState(
+    Dimensions.get("window").width / 4
+  );
 
   const numberInputHandler = (inputText) => {
     setEnteredValue(inputText.replace(/[^0-9]/g, ""));
@@ -34,6 +37,21 @@ const StartGameScreen = (props) => {
     setEnteredValue("");
     setConfirmed(false);
   };
+
+  useEffect(() => {
+    const updateLayout = () => {
+      setButtonWidth(Dimensions.get("window").width / 4);
+    };
+
+    Dimensions.addEventListener("change", updateLayout);
+
+    // 이렇게 useEffect에서 return 하는 함수는
+    // useEffect가 돌기 전에 한번 도는 함수라고 생각을 하면 된다.
+    // 이렇게 해야지 단 하나의 EventListener를 유지할 수 있기 떄문이다.
+    return () => {
+      Dimensions.removeEventListener("change", updateLayout);
+    };
+  });
 
   const confirmInputHandler = () => {
     const chosenNumber = parseInt(enteredValue);
@@ -66,15 +84,7 @@ const StartGameScreen = (props) => {
   }
 
   return (
-    // 일단 ScrollView를 넣어줬다.
-    // Landscape Mode로 바꾸니까 세로가 너무 짧아져서
-    // ScrollView를 해놓지 않는 이상 밑에 있는 것을 볼 수가 없었다.
     <ScrollView>
-      {/* 이걸 했던 이유는 IOS에서 음 뭐랄까. 랜드 스케이프 모드일떄,
-      키보드가 차지하는 화면 비율이 너무 컸다. behavior 같은 경우
-      안드로이드는 padding이 가장 적합하고 IOS는 position이 가장 적당하다고 하는데
-      글쎼다 이게 각각이 무엇을 의미하는지는 정확하게는 모르겠다.
-      */}
       <KeyboardAvoidingView behavior="position" keyboardVerticalOffset={30}>
         <TouchableWithoutFeedback
           onPress={() => {
@@ -95,14 +105,14 @@ const StartGameScreen = (props) => {
                 value={enteredValue}
               />
               <View style={styles.buttonContainer}>
-                <View style={styles.button}>
+                <View style={{ width: buttonWidth }}>
                   <Button
                     title="Reset"
                     onPress={resetInputHandler}
                     color={Colors.accent}
                   />
                 </View>
-                <View style={styles.button}>
+                <View style={{ width: buttonWidth }}>
                   <Button
                     title="Confirm"
                     onPress={confirmInputHandler}
@@ -144,7 +154,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   button: {
-    width: Dimensions.get("window").width / 4,
+    // 근데 이건 문제가 되는게 앱이 시작될 때 딱 한번
+    // 이게 일어나기 때문에 portrait 로 했으면 한번 정해지고
+    // 그 다음 landscape 모드로 넘어가면 이 값이 고정되어 있기 때문에
+    // 적절한 화면이 나타나지 않는다는 것이다. 그렇기 떄문에 여기서 필요한 것은
+    // 모드가 바뀔떄 마다 다시 계산을 해주는 무언가가 필요하다 그말이다.
+    // 그리고 Rerendering 될 떄 마다 바뀌는 것이기 떄문에 여기다가 넣으면 안되고
+    // inline style로 넣어야 한다는 것도 주의깊게 보아야 한다.
+    // styles를 따로 둔 것은 여태까지 rendering 하는 것과 관계가 없었기 떄문이지만
+    // 여기서는 state 값에 따라 달라져야 하기 때문에 함수 안에다가 넣어야 한다는 것이다.
+    // width: Dimensions.get("window").width / 4,
   },
   input: {
     width: 50,
